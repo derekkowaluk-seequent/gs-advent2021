@@ -20,9 +20,9 @@ def solve(filename):
 	line = f.readline()
 
 	previous = value = 0 + int(line)
+
 	while line:
 		value = 0 + int(line)
-
 		if (value > previous):
 			print("{} (increased)".format(value))
 			increase_count = increase_count + 1
