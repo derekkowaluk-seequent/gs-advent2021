@@ -13,7 +13,7 @@ def solve(filename):
 	while line:
 		print(line)
 
-
+	return 0
 
 def main():
 	if len(sys.argv) < 2: 
@@ -21,7 +21,7 @@ def main():
 		sys.exit()
 	filepath = sys.argv[1]
 
-	solution = 0
+	solution = solve(filepath)
 	print("The Solution is {}".format(solution))
 
 if __name__ == '__main__':
