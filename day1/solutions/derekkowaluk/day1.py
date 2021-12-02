@@ -8,12 +8,34 @@ import os
 
 
 def solve(filename):
-	f = open(filename, 'rU')
-	line = f.readline()
-	while line:
-		print(line)
+	f = None
+	try:
+		f = open(filename)
+	except OSError:
+		print("File Error")
+		return 0
 
-	return 0
+	increase_count = 0
+	decrease_count = 0
+	line = f.readline()
+
+	previous = value = 0 + int(line)
+	while line:
+		value = 0 + int(line)
+
+		if (value > previous):
+			print("{} (increased)".format(value))
+			increase_count = increase_count + 1
+		elif (value < previous):
+			print("{} (decreased)".format(value))
+			decrease_count = decrease_count + 1
+		else:
+			print("{} (unchanged)".format(value))
+		previous = value
+		line = f.readline()
+
+	print(decrease_count)
+	return increase_count
 
 def main():
 	if len(sys.argv) < 2: 
