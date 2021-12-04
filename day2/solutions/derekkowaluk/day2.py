@@ -35,13 +35,27 @@ def solve_part2(data, showoutput = True):
 	return 0
 
 def solve_part1(data, showoutput = True):
-
+	hpos = 0
+	dpos = 0
 	for eachvalue in data:
 		command, value = eachvalue.split()
 		if showoutput: print("{} {}".format(command, value))
+		intvalue = int(value)
+		if command == 'forward':
+			hpos = hpos + intvalue
+		elif command == 'down':
+			dpos = dpos + intvalue
+		elif command == 'up':
+			dpos = dpos - intvalue
 
 
-	return 0
+
+
+
+
+
+
+	return hpos * dpos
 
 def main():
 	data = None
