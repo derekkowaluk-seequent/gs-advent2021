@@ -25,7 +25,36 @@ def get_data(filename):
 
 
 def solve_part2(data):
-	return 0
+	if len(data) < 3 : return 0
+	increase_count = 0
+	decrease_count = 0
+
+	remove_index = 0
+	index = 2
+
+	previous = 0
+	eachvalue = data[0] + data[1]
+	first = True
+	while index < len(data):
+		eachvalue = eachvalue + data[index]
+		if first: 
+			print("{} (N/A - no previous sum)".format(eachvalue))
+			first = False
+		else:
+			if (eachvalue > previous):
+				print("{} (increased)".format(eachvalue))
+				increase_count = increase_count + 1
+			elif (eachvalue < previous):
+				print("{} (decreased)".format(eachvalue))
+				decrease_count = decrease_count + 1
+			else:
+				print("{} (unchanged)".format(eachvalue))
+		previous = eachvalue
+		eachvalue = eachvalue - data[remove_index]
+		remove_index = remove_index + 1
+		index = index + 1
+
+	return increase_count
 
 
 def solve_part1(data):
