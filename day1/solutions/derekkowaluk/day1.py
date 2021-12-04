@@ -24,10 +24,12 @@ def get_example_data():
 def get_data(filename):
 	f = None
 	data = []
+
 	try:
 		f = open(filename)
 	except OSError:
 		print("File Error")
+
 		return [-1, data]
 
 	line = f.readline()
@@ -69,7 +71,6 @@ def solve_part2(data):
 		index = index + 1
 
 	return increase_count
-
 
 def solve_part1(data):
 	increase_count = 0
