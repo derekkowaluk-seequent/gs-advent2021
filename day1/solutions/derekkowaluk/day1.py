@@ -24,7 +24,7 @@ def get_data(filename):
 	return [0,data]
 
 
-def solve_part2(filename):
+def solve_part2(data):
 	return 0
 
 
@@ -63,7 +63,10 @@ def main():
 	if result : return
 
 	solution = solve_part1(data)
-	print("The Solution is {}".format(solution))
+	print("The Solution for part 1 is {}".format(solution))
+
+	solution = solve_part2(data)
+	print("The Solution for part 2 is {}".format(solution))
 
 if __name__ == '__main__':
 	main()
