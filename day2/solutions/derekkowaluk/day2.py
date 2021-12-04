@@ -32,7 +32,20 @@ def get_data(filename):
 
 
 def solve_part2(data, showoutput = True):
-	return 0
+	hpos = 0
+	dpos = 0
+	aim = 0
+	for eachvalue in data:
+		command, value = eachvalue.split()
+		intvalue = int(value)
+		if command == 'forward':
+			hpos = hpos + intvalue
+			dpos = dpos + aim * intvalue
+		elif command == 'down':
+			aim = aim + intvalue
+		elif command == 'up':
+			aim = aim - intvalue
+		if showoutput: print("{} {}: hpos={} aim={}".format(command, value,hpos,aim))
 
 def solve_part1(data, showoutput = True):
 	hpos = 0
@@ -47,13 +60,6 @@ def solve_part1(data, showoutput = True):
 			dpos = dpos + intvalue
 		elif command == 'up':
 			dpos = dpos - intvalue
-
-
-
-
-
-
-
 
 	return hpos * dpos
 
@@ -70,7 +76,7 @@ def main():
 		if result : 
 			sys.exit()
 
-	solution = solve_part1(data)
+	solution = solve_part1(data, False)
 	print("The Solution for part 1 is {}".format(solution))
 
 	solution = solve_part2(data)
