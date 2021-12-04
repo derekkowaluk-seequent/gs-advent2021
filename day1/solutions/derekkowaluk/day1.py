@@ -7,6 +7,20 @@ import sys
 import os
 
 
+def get_example_data():
+	return [
+		199,
+		200,
+		208,
+		210,
+		200,
+		207,
+		240,
+		269,
+		260,
+		263
+		]
+
 def get_data(filename):
 	f = None
 	data = []
@@ -48,7 +62,7 @@ def solve_part2(data):
 				print("{} (decreased)".format(eachvalue))
 				decrease_count = decrease_count + 1
 			else:
-				print("{} (unchanged)".format(eachvalue))
+				print("{} (no change)".format(eachvalue))
 		previous = eachvalue
 		eachvalue = eachvalue - data[remove_index]
 		remove_index = remove_index + 1
@@ -75,7 +89,7 @@ def solve_part1(data):
 				print("{} (decreased)".format(eachvalue))
 				decrease_count = decrease_count + 1
 			else:
-				print("{} (unchanged)".format(eachvalue))
+				print("{} (no change)".format(eachvalue))
 		previous = eachvalue
 
 	print(decrease_count)
@@ -88,6 +102,8 @@ def main():
 	filepath = sys.argv[1]
 
 	result,data = get_data(filepath)
+
+	data = get_example_data()
 
 	if result : return
 
