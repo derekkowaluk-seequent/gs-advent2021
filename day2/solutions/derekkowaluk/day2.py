@@ -81,7 +81,7 @@ def main():
 	solution = solve_part1(data, False)
 	print("The Solution for part 1 is {}".format(solution))
 
-	solution = solve_part2(data)
+	solution = solve_part2(data, False)
 	print("The Solution for part 2 is {}".format(solution))
 
 if __name__ == '__main__':
