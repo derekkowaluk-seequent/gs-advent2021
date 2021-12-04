@@ -45,7 +45,9 @@ def solve_part2(data, showoutput = True):
 			aim = aim + intvalue
 		elif command == 'up':
 			aim = aim - intvalue
-		if showoutput: print("{} {}: hpos={} aim={}".format(command, value,hpos,aim))
+		if showoutput: print("{} {}: hpos={} dpos={} aim={}".format(command, value,hpos,dpos,aim))
+
+	return hpos * dpos
 
 def solve_part1(data, showoutput = True):
 	hpos = 0
