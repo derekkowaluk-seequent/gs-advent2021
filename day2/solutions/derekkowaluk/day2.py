@@ -31,14 +31,14 @@ def get_data(filename):
 	return [0,data]
 
 
-def solve_part2(data):
+def solve_part2(data, showoutput = True):
 	return 0
 
-def solve_part1(data):
+def solve_part1(data, showoutput = True):
 
 	for eachvalue in data:
 		command, value = eachvalue.split()
-		print("{} {}".format(command, value))
+		if showoutput: print("{} {}".format(command, value))
 
 
 	return 0
@@ -47,9 +47,11 @@ def main():
 	data = None
 	if len(sys.argv) < 2: 
 		print("Using Example Data")
+		print("------------------")
 		data = get_example_data()
 	else:
 		filepath = sys.argv[1]
+		print("Using file:{}".format(filepath))
 		result,data = get_data(filepath)
 		if result : 
 			sys.exit()
