@@ -35,6 +35,12 @@ def solve_part2(data):
 	return 0
 
 def solve_part1(data):
+
+	for eachvalue in data:
+		command, value = eachvalue.split()
+		print("{} {}".format(command, value))
+
+
 	return 0
 
 def main():
