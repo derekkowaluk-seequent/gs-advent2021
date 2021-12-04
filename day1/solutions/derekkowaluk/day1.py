@@ -28,32 +28,26 @@ def solve_part2(filename):
 	return 0
 
 
-def solve_part1(filename):
-	f = None
-	try:
-		f = open(filename)
-	except OSError:
-		print("File Error")
-		return 0
-
+def solve_part1(data):
 	increase_count = 0
 	decrease_count = 0
-	line = f.readline()
+	previous = 0
+	first = True
 
-	previous = value = 0 + int(line)
-
-	while line:
-		value = 0 + int(line)
-		if (value > previous):
-			print("{} (increased)".format(value))
-			increase_count = increase_count + 1
-		elif (value < previous):
-			print("{} (decreased)".format(value))
-			decrease_count = decrease_count + 1
+	for eachvalue in data:
+		if first: 
+			print("(N/A - no previous measurement)")
+			first = False
 		else:
-			print("{} (unchanged)".format(value))
-		previous = value
-		line = f.readline()
+			if (eachvalue > previous):
+				print("{} (increased)".format(eachvalue))
+				increase_count = increase_count + 1
+			elif (eachvalue < previous):
+				print("{} (decreased)".format(eachvalue))
+				decrease_count = decrease_count + 1
+			else:
+				print("{} (unchanged)".format(eachvalue))
+		previous = eachvalue
 
 	print(decrease_count)
 	return increase_count
@@ -64,11 +58,11 @@ def main():
 		sys.exit()
 	filepath = sys.argv[1]
 
-	data = get_data(filepath)
+	result,data = get_data(filepath)
 
-	if data[0] : return
+	if result : return
 
-	solution = solve_part1(filepath)
+	solution = solve_part1(data)
 	print("The Solution is {}".format(solution))
 
 if __name__ == '__main__':
