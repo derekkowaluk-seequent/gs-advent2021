@@ -96,16 +96,15 @@ def solve_part1(data):
 	return increase_count
 
 def main():
+	data = None
 	if len(sys.argv) < 2: 
-		print("File Path Required")
-		sys.exit()
-	filepath = sys.argv[1]
-
-	result,data = get_data(filepath)
-
-	data = get_example_data()
-
-	if result : return
+		print("Using Example Data")
+		data = get_example_data()
+	else:
+		filepath = sys.argv[1]
+		result,data = get_data(filepath)
+		if result : 
+			sys.exit()
 
 	solution = solve_part1(data)
 	print("The Solution for part 1 is {}".format(solution))
