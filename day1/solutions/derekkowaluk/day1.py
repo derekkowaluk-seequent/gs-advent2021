@@ -7,7 +7,28 @@ import sys
 import os
 
 
-def solve(filename):
+def get_data(filename):
+	f = None
+	data = []
+	try:
+		f = open(filename)
+	except OSError:
+		print("File Error")
+		return [-1, data]
+
+	line = f.readline()
+	while line:
+		value = 0 + int(line)
+		data.append(value)
+		line = f.readline()
+	return [0,data]
+
+
+def solve_part2(filename):
+	return 0
+
+
+def solve_part1(filename):
 	f = None
 	try:
 		f = open(filename)
@@ -43,7 +64,11 @@ def main():
 		sys.exit()
 	filepath = sys.argv[1]
 
-	solution = solve(filepath)
+	data = get_data(filepath)
+
+	if data[0] : return
+
+	solution = solve_part1(filepath)
 	print("The Solution is {}".format(solution))
 
 if __name__ == '__main__':
