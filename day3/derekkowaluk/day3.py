@@ -32,7 +32,7 @@ def get_data(filename):
 
 	line = f.readline()
 	while line:
-		data.append(line)
+		data.append(line.strip())
 		line = f.readline()
 	return [0,data]
 
