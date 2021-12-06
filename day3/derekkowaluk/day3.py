@@ -66,7 +66,7 @@ def solve_part2(data, showoutput = True):
 	longest = 0
 	while len(oxy_data) > 1:
 		oxy_data = filter_data(oxy_data, lambda v:v[pos] == '1', lambda a, b: len(a) >= len(b))
-		print(oxy_data)
+		if showoutput : print(oxy_data)
 		pos = pos + 1
 		if pos > longest : longest = pos
 
@@ -78,7 +78,7 @@ def solve_part2(data, showoutput = True):
 	longest = 0
 	while len(co2_data) > 1:
 		co2_data = filter_data(co2_data, lambda v:v[pos] == '1', lambda a, b: len(a) < len(b))
-		print(co2_data)
+		if showoutput :print(co2_data)
 		pos = pos + 1
 		if pos > longest : longest = pos
 
