@@ -57,6 +57,15 @@ def solve_part2(data, showoutput = True):
 
 	oxy_data = filter_data(oxy_data, lambda v:v[1] == '1', lambda a, b: len(a) >= len(b))
 	print(oxy_data)
+
+	oxy_data = filter_data(oxy_data, lambda v:v[2] == '1', lambda a, b: len(a) >= len(b))
+	print(oxy_data)
+
+	oxy_data = filter_data(oxy_data, lambda v:v[3] == '1', lambda a, b: len(a) >= len(b))
+	print(oxy_data)
+
+	oxy_data = filter_data(oxy_data, lambda v:v[4] == '1', lambda a, b: len(a) >= len(b))
+	print(oxy_data)
 	
 
 
