@@ -37,14 +37,14 @@ def get_data(filename):
 	return [0,data]
 
 
-def filter_data(data, filter):
+def filter_data(data, filter, compare):
 	a_data = []
 	b_data = []
 	for eachdata in data:
-		if filter(data): a_data.append(eachdata)
-		else b_data.append(eachdata)
+		if filter(eachdata): a_data.append(eachdata)
+		else: b_data.append(eachdata)
 
-	if len(a_data) >= len(b_data):
+	if compare(a_data,b_data):
 		return a_data
 	return b_data
 
@@ -52,10 +52,16 @@ def solve_part2(data, showoutput = True):
 	gamma = 0
 	epsilon = 0
 
-	oxy_data = filter_data(data, lambda v:v[0] == 1)
+	oxy_data = filter_data(data, lambda v:v[0] == '1', lambda a, b: len(a) >= len(b))
 	print(oxy_data)
-	co2_data = filter_data(data, lambda v:v[0] == 0)
-	print(co2_data)
+
+	oxy_data = filter_data(oxy_data, lambda v:v[1] == '1', lambda a, b: len(a) >= len(b))
+	print(oxy_data)
+	
+
+
+	#co2_data = filter_data(data, lambda v:v[0] == '1', lambda a, b: len(a) <= len(b))
+	#print(co2_data)
 
 
 
