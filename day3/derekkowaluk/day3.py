@@ -48,26 +48,45 @@ def filter_data(data, filter, compare):
 		return a_data
 	return b_data
 
+
+def bin_to_dec(value):
+	result = 0
+	for eachbit in value:
+		result = result << 1
+		if eachbit == '1': result = result + 1
+
+	return result
+
 def solve_part2(data, showoutput = True):
-	gamma = 0
-	epsilon = 0
+	oxygen = 0
+	CO2 = 0
 
 	oxy_data = data.copy()
 	pos = 0
+	longest = 0
 	while len(oxy_data) > 1:
 		oxy_data = filter_data(oxy_data, lambda v:v[pos] == '1', lambda a, b: len(a) >= len(b))
 		print(oxy_data)
 		pos = pos + 1
+		if pos > longest : longest = pos
 
+	oxygen = bin_to_dec(oxy_data[0])
+	print("Oxygen:{}".format(oxygen))
 	
+	co2_data = data.copy()
+	pos = 0
+	longest = 0
+	while len(co2_data) > 1:
+		co2_data = filter_data(co2_data, lambda v:v[pos] == '1', lambda a, b: len(a) <= len(b))
+		print(co2_data)
+		pos = pos + 1
+		if pos > longest : longest = pos
+
+	CO2 = bin_to_dec(co2_data[0])
+	print("CO2:{}".format(CO2))
 
 
-	#co2_data = filter_data(data, lambda v:v[0] == '1', lambda a, b: len(a) <= len(b))
-	#print(co2_data)
-
-
-
-	return gamma * epsilon
+	return oxygen * CO2
 
 def solve_part1(data, showoutput = True):
 	gamma = 0
