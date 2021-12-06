@@ -57,6 +57,7 @@ def solve_part2(data, showoutput = True):
 	while len(oxy_data) > 1:
 		oxy_data = filter_data(oxy_data, lambda v:v[pos] == '1', lambda a, b: len(a) >= len(b))
 		print(oxy_data)
+		pos = pos + 1
 
 	
 
