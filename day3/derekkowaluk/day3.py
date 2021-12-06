@@ -37,9 +37,28 @@ def get_data(filename):
 	return [0,data]
 
 
+def filter_data(data, filter):
+	a_data = []
+	b_data = []
+	for eachdata in data:
+		if filter(data): a_data.append(eachdata)
+		else b_data.append(eachdata)
+
+	if len(a_data) >= len(b_data):
+		return a_data
+	return b_data
+
 def solve_part2(data, showoutput = True):
 	gamma = 0
 	epsilon = 0
+
+	oxy_data = filter_data(data, lambda v:v[0] == 1)
+	print(oxy_data)
+	co2_data = filter_data(data, lambda v:v[0] == 0)
+	print(co2_data)
+
+
+
 	return gamma * epsilon
 
 def solve_part1(data, showoutput = True):
