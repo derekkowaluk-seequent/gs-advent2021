@@ -50,7 +50,24 @@ def get_data(filename):
 	numlist = []
 	for val in first:
 		numlist.append(int(val))
-	return [0,[numlist,data[1:]]]
+	return [0,[numlist,data[2:]]]
+
+def get_boards(data):
+	current_count = 0
+	board_list = []
+	current_board = []
+	for eachline in data:
+		if current_count == 5:
+			board_list.append(current_board)
+			current_board = []
+		row = []
+		for eachval in eachline:
+			row.append(int(eachval))
+		current_board.append(row)
+		current_count = current_count + 1
+	board_list.append(current_board)
+	return board_list
+
 
 
 def solve_part2(data, showoutput = True):
