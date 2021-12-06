@@ -52,20 +52,12 @@ def solve_part2(data, showoutput = True):
 	gamma = 0
 	epsilon = 0
 
-	oxy_data = filter_data(data, lambda v:v[0] == '1', lambda a, b: len(a) >= len(b))
-	print(oxy_data)
+	oxy_data = data.copy()
+	pos = 0
+	while len(oxy_data) > 1:
+		oxy_data = filter_data(oxy_data, lambda v:v[pos] == '1', lambda a, b: len(a) >= len(b))
+		print(oxy_data)
 
-	oxy_data = filter_data(oxy_data, lambda v:v[1] == '1', lambda a, b: len(a) >= len(b))
-	print(oxy_data)
-
-	oxy_data = filter_data(oxy_data, lambda v:v[2] == '1', lambda a, b: len(a) >= len(b))
-	print(oxy_data)
-
-	oxy_data = filter_data(oxy_data, lambda v:v[3] == '1', lambda a, b: len(a) >= len(b))
-	print(oxy_data)
-
-	oxy_data = filter_data(oxy_data, lambda v:v[4] == '1', lambda a, b: len(a) >= len(b))
-	print(oxy_data)
 	
 
 
