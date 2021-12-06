@@ -57,23 +57,35 @@ def get_boards(data):
 	board_list = []
 	current_board = []
 	for eachline in data:
-		if current_count == 5:
-			board_list.append(current_board)
+		if current_count > 4:
+			current_count = 0
+			print(current_board)
+			print()
+			board_list.append(current_board.copy())
 			current_board = []
 		row = []
-		for eachval in eachline:
+		#print(eachline)
+		for eachval in eachline.split():
 			row.append(int(eachval))
-		current_board.append(row)
-		current_count = current_count + 1
+		if len(row) : 
+			current_board.append(row.copy())
+			current_count = current_count + 1
+
+		
 	board_list.append(current_board)
+	print(current_board)
+	print()
 	return board_list
 
 
 
 def solve_part2(data, showoutput = True):
+
 	return 0
 
 def solve_part1(data, showoutput = True):
+	boards = get_boards(data[1])
+	#print(boards[:1])
 	return 0
 
 def main():
@@ -89,8 +101,8 @@ def main():
 		if result : 
 			sys.exit()
 
-	print(data[0])
-	print(data[1][:5])
+	#print(data[0])
+	#print(data[1][:5])
 
 	solution = solve_part1(data, False)
 	print("The Solution for part 1 is {}".format(solution))
