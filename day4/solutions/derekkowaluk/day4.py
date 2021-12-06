@@ -10,7 +10,7 @@ class GameBoard:
 	hitcount = 0
 
 	def __init__(self, board):
-		self.board = board
+		self.board = board.copy()
 
 
 	def print_board(self):
@@ -27,9 +27,9 @@ class GameBoard:
 				if ball == item[0]:
 					item[1] = 1
 					print("Hit")
-					self.board.hitcount = self.board.hitcount + 1
+					self.hitcount = self.hitcount + 1
 					break
-		print_board(self.board)
+		self.print_board()
 
 
 def get_example_data():
@@ -88,7 +88,7 @@ def get_boards(data):
 			current_count = 0
 			print(current_board)
 			print()
-			board_list.append(current_board.copy())
+			board_list.append(GameBoard(current_board))
 			current_board = []
 		row = []
 		#print(eachline)
@@ -105,23 +105,6 @@ def get_boards(data):
 	return board_list
 
 
-def print_board(board):
-	for eachrow in board:
-		for eachnum in eachrow:
-			status = '*' if eachnum[1] else ' '
-			print("{:<2}{}".format(eachnum[0], status), end=' ')
-		print()
-
-def check_ball(board, ball):
-	current = [0,0]
-	for eachrow in board:
-		for item in eachrow:
-			if ball == item[0]:
-				item[1] = 1
-				print("Hit")
-				break
-	print_board(board)
-
 
 def solve_part2(data, showoutput = True):
 
@@ -130,7 +113,7 @@ def solve_part2(data, showoutput = True):
 def solve_part1(data, showoutput = True):
 	boards = get_boards(data[1])
 	
-	for eachball in data[0][:1]:
+	for eachball in data[0][:2]:
 		for eachboard in boards:
 			eachboard.check_ball(eachball)
 			#check_ball(eachboard, eachball)
