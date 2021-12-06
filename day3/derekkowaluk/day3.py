@@ -77,7 +77,7 @@ def solve_part2(data, showoutput = True):
 	pos = 0
 	longest = 0
 	while len(co2_data) > 1:
-		co2_data = filter_data(co2_data, lambda v:v[pos] == '1', lambda a, b: len(a) <= len(b))
+		co2_data = filter_data(co2_data, lambda v:v[pos] == '1', lambda a, b: len(a) < len(b))
 		print(co2_data)
 		pos = pos + 1
 		if pos > longest : longest = pos
