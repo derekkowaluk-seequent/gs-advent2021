@@ -8,7 +8,7 @@ import os
 class GameBoard:
 	board = None
 	hitcount = 0
-
+	active = True
 	def __init__(self, board):
 		self.board = board.copy()
 
@@ -17,19 +17,54 @@ class GameBoard:
 		for eachrow in self.board:
 			for eachnum in eachrow:
 				status = '*' if eachnum[1] else ' '
-				print("{:<2}{}".format(eachnum[0], status), end=' ')
+				print("{:>2}{}".format(eachnum[0], status), end=' ')
 			print()
 
-	def check_ball(self, ball):
+	def add_ball(self, ball):
 		current = [0,0]
 		for eachrow in self.board:
+			current[0] = 0
 			for item in eachrow:
 				if ball == item[0]:
 					item[1] = 1
-					print("Hit")
 					self.hitcount = self.hitcount + 1
-					break
-		self.print_board()
+					return current
+				current[0] = current[0] + 1
+
+			current[1] = current[1] + 1
+		return [-1,-1]
+
+	def check_ball(self, ball):
+		b = self.add_ball(ball)
+		if b[0] != -1 : 
+			#print(b)
+			if self.hitcount > 5:
+				if self.check_vertical(b) or self.check_horizontal(b):
+					#print("Line Found!!!")
+					return True
+
+
+
+	def check_horizontal(self, pos):
+		column, row = pos
+		for eachnum in self.board[row]:
+			if not eachnum[1]: return False
+		#print("Horizontal")
+		return True
+
+	def check_vertical(self, pos):
+		column, row = pos
+		for eachrow in self.board:
+			if not eachrow[column][1]: return False
+		#print("Vertical:{}".format(column))
+		return True
+
+	def sum_unmarked(self):
+		total = 0
+		for eachrow in self.board:
+			for eachnum in eachrow:
+				if not eachnum[1] : total = total + eachnum[0]
+		return total
 
 
 def get_example_data():
@@ -79,19 +114,20 @@ def get_data(filename):
 		numlist.append(int(val))
 	return [0,[numlist,data[2:]]]
 
-def get_boards(data):
+def get_boards(data, showoutput = True):
 	current_count = 0
 	board_list = []
 	current_board = []
 	for eachline in data:
 		if current_count > 4:
 			current_count = 0
-			print(current_board)
-			print()
+			if showoutput :
+				print(current_board)
+				print()
 			board_list.append(GameBoard(current_board))
 			current_board = []
 		row = []
-		#print(eachline)
+
 		for eachval in eachline.split():
 			row.append([int(eachval), 0])
 		if len(row) : 
@@ -100,23 +136,51 @@ def get_boards(data):
 
 		
 	board_list.append(GameBoard(current_board))
-	#print(current_board)
-	print()
+	if showoutput : print()
 	return board_list
 
 
 
 def solve_part2(data, showoutput = True):
+	boards = get_boards(data[1], showoutput)
+	for eachball in data[0][:]:
+		if showoutput : print("{}".format(eachball))
+		boardcount = 0
+		lastboard = None
+		for eachboard in boards:
+			if not eachboard.active : continue
+			boardcount = boardcount + 1
+			result = eachboard.check_ball(eachball)
+			if showoutput : 
+				eachboard.print_board()
+				print()
+			if result: 
+				eachboard.active = False
+			#check_ball(eachboard, eachball)
+			lastboard = eachboard
+		if boardcount == 1 and not lastboard.active:
+			if showoutput : 
+				print("Last Board:")
+				lastboard.print_board()
+			return lastboard.sum_unmarked() * eachball
 
+		if showoutput : print("-"*20)
 	return 0
 
 def solve_part1(data, showoutput = True):
-	boards = get_boards(data[1])
+	boards = get_boards(data[1], showoutput)
 	
-	for eachball in data[0][:2]:
+	for eachball in data[0][:]:
+		if showoutput :print("{}".format(eachball))
 		for eachboard in boards:
-			eachboard.check_ball(eachball)
+			result = eachboard.check_ball(eachball)
+			if showoutput :
+				eachboard.print_board()
+				print()
+			if result: 
+				return eachboard.sum_unmarked() * eachball
 			#check_ball(eachboard, eachball)
+		if showoutput : print("-"*20)
 
 	return 0
 
@@ -124,7 +188,7 @@ def main():
 	data = None
 	if len(sys.argv) < 2: 
 		print("Using Example Data")
-		print("------------------")
+		print("-"*40)
 		data = get_example_data()
 	else:
 		filepath = sys.argv[1]
