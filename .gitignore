@@ -2,3 +2,4 @@
 /KenDang/Debug
 /KenDang/.vs/Advent2021/v16
 /.vs
+*.pyc
