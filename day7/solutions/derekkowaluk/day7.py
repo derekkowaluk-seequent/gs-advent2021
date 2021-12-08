@@ -7,14 +7,12 @@ import os
 
 class rolling_mean:
 	mean = 0
-	accum_positive = [0]
-	accum_negative = [0]
+	accum_positive = 0
+	accum_negative = 0
 	count = 0
 
 	def __str__(self):
-		return "Mean:{} +:{} -:{} ({})".format(self.mean, self.accum_positive[0], self.accum_positive[0], self.count)
-
-
+		return "Mean:{} +:{} -:{} ({})".format(self.mean, self.accum_positive, self.accum_negative, self.count)
 
 
 	def add_value(self, value):
@@ -22,41 +20,46 @@ class rolling_mean:
 			self.mean = value
 			self.count = 1
 			return self.mean
-		left = None
-		right = None
+
+		left = self.accum_positive
+		right = self.accum_negative
 
 		self.count = self.count + 1
-		diff = 0
+
 		if value > self.mean:
-			diff = value - self.mean
-			left = self.accum_positive
-			right = self.accum_negative
-			increment = 1
-		else:
-			diff = self.mean - value
-			right = self.accum_positive
-			left = self.accum_negative
-			increment = -1
+			left = left + value - self.mean
 
-		diff = diff + left[0]
-
-		if right[0] > diff:
-			right[0] = right[0] - diff
-			left[0] = 0
+			if right > left:
+				right = right - left
+				left = 0
+			else :
+				left = left - right
+				right = 0
+				while left >= self.count:
+					self.mean = self.mean + 1
+					left = left - self.count
 		else:
-			diff = diff - right[0]
-			right[0] = 0
-			while diff >= self.count:
-				print("D:{}".format(diff))
-				self.mean = self.mean + increment
-				diff = diff - self.count
-				left[0] = diff
-				print("L:{}".format(left[0]))
+			right = right + self.mean - value
+
+			if left > right:
+				left = left - right
+				right = 0
+			else :
+				right = right - left
+				left = 0
+				while right >= self.count:
+					self.mean = self.mean - 1
+					right = right - self.count
+
+		self.accum_positive = left
+		self.accum_negative = right
 		return self.mean
 
 
 def get_example_data():
 	return [ 16,1,2,0,4,2,7,1,2,14 ]
+
+
 
 def get_data(filename):
 	f = None
