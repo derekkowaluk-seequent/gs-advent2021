@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <fstream> 
+#include "Day5.h"
+#include "Day6.h"
 constexpr int MissingValue = -9999999;
 #define EQ ==
 #define NE !=
@@ -10,6 +12,7 @@ constexpr int MissingValue = -9999999;
 #define OR ||
 #define LT <
 #define GT >
+#define GE >=
 #define LE <=
 
 static void Day1A_()
@@ -149,40 +152,179 @@ bool MajoritySet_(int index, const std::vector<Bitset>& list)
 	{
 		currBitset.test(index) ? count++ : count--;
 	}
-	return count GT 0;
+	return count GE 0;
 }
+#include <functional>
+using ComparisonFunc = std::function<bool(bool, bool)>;
+int FilteredValue_(std::vector<Bitset> list, //copied list since it is modified. HOWEVER, could use std::partition instead of erase_if
+	const ComparisonFunc& func)
+{
+	for (unsigned index = 11; list.size() GT 1 AND index GE 0; --index)
+	{
+		bool isSet = MajoritySet_(index, list);
+		std::erase_if(list, [&](const Bitset& bit) {return func(bit.test(index), isSet); });
+	}
+	_ASSERT(list.size() EQ 1);
+	return list.front().to_ulong();
+}
+
 static void Day3B_()
 {
-	std::vector<Bitset> secondList;
+	/*
+	In string form:
+	100000101101
+	^          ^
+	11th       0th exponent
+
+	In bitset,
+	101101000001
+	^          ^
+	0th	       11th exponent
+	*/
+	std::vector<Bitset> list;
 	std::ifstream infile("3.txt");
-	std::bitset<12> currBitset;
+	Bitset currBitset;
 	while (infile >> currBitset)
 	{
-		secondList.push_back(currBitset);
+		list.push_back(currBitset);
 	}
-	auto firstList = secondList;
+	auto first = FilteredValue_(list, [](const bool b1, const bool b2) {return b1 NE b2; }); //Erase things NOT matching majority
+	auto second = FilteredValue_(list, [](const bool b1, const bool b2) {return b1 EQ b2; }); //Erase things matching majority.
+	std::cout << "3B:" << first * second << "\n";
+}
 
-	int index = 0;
-	while (firstList.size() GT 1 AND index LT 12)
+#include <string>
+#include <sstream>
+class BingoBoard
+{
+public:
+	BingoBoard(std::vector<std::string>::iterator begin, std::vector<std::string>::iterator end)
 	{
-		bool isSet = MajoritySet_(index, firstList);
-		std::erase_if(firstList, [&](const Bitset& bit) {return bit.test(index) NE isSet; });
-		index++;
+		_ASSERT(std::distance(begin, end) EQ 5);
+		for (; begin NE end; ++begin)
+		{
+			std::istringstream iss(*begin);
+			std::string subString;
+			while (std::getline(iss, subString, ' '))
+			{
+				if(!subString.empty())
+					numbers_.push_back(std::stoi(subString));
+			}
+		}
+		_ASSERT(numbers_.size() EQ 25);
 	}
-	_ASSERT(index LE 12); //invalid 
-
-	index = 0;
-	while (secondList.size() GT 1 AND index LT 12)
+	bool Validate(int number)
 	{
-		bool isSet = MajoritySet_(index, secondList);
-		std::erase_if(secondList, [&](const Bitset& bit) {return bit.test(index) EQ isSet; });
-		index++;
+		auto itFound = std::find(numbers_.begin(), numbers_.end(), number);
+		if (itFound NE numbers_.end())
+		{
+			auto pos = std::distance(numbers_.begin(), itFound);
+			calledFields_.set(pos);
+		}
+		static const auto winnerBitsets = WinningBitsets_();
+		for (const auto& winningBits : winnerBitsets)
+		{
+			auto won = (winningBits & calledFields_) EQ winningBits;
+			if(won)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
-	_ASSERT(index LE 12); //invalid
+	int SumOfUncalled() const
+	{
+		int sum = 0;
+		for (unsigned i = 0; i < 25; ++i)
+		{
+			if (!calledFields_.test(i))
+			{
+				sum+=numbers_[i];
+			}
+		}
+		return sum;
+	}
+private:
+	std::vector< std::bitset<25>> WinningBitsets_()
+	{
+		std::vector< std::bitset<25>> winningBitsets;
+		std::string horizString = "1111100000000000000000000"; //represents matches on top row.
+		for (unsigned i = 0; i < 5; ++i)
+		{
+			winningBitsets.emplace_back(horizString);
+			std::rotate(horizString.begin(), horizString.begin() + 5, horizString.end()); //rotate 5 times for each row
+		}
+		std::string vertString = "1000010000100001000010000"; //represents matches on a vert column
+		for (unsigned i = 0; i < 5; ++i)
+		{
+			winningBitsets.emplace_back(vertString);
+			std::rotate(vertString.begin(), vertString.begin() + 1, vertString.end()); //Rotate 1 for each column
+		}
+		return winningBitsets;
+	}
+	std::bitset<25> calledFields_;
+	std::vector<int> numbers_;
+};
+std::pair<std::vector<int>, std::vector<BingoBoard>> ReadBoard_()
+{
+	std::vector<int> callingNumbers;
+	std::ifstream infile("4.txt");
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(infile, line, '\n'))
+	{
+		lines.push_back(line);
+	}
 
+	std::istringstream iss(lines[0]);
+	std::string subString;
+	while (std::getline(iss, subString, ','))
+	{
+		callingNumbers.push_back(std::stoi(subString));
+	}
+	
+	std::vector<BingoBoard> boards;
+	for (auto begin = lines.begin() + 2; begin NE lines.end(); std::advance(begin, 6))
+	{
+		auto end = begin + 5;
+		boards.emplace_back(begin, end);
+		if (end EQ lines.end()) break;
+	}
+	return std::make_pair(callingNumbers, boards);
+}
+static void Day4A_()
+{
+	auto [callingNumbers, bingoBoards] = ReadBoard_();
 
-	std::cout << "3B:" << firstList.front().to_ulong() * secondList.front().to_ulong() << "\n";
-
+	for (const auto number : callingNumbers)
+	{
+		for (auto& board : bingoBoards)
+		{
+			if (board.Validate(number))
+			{
+				std::cout << "4A:" << board.SumOfUncalled() * number << "\n";
+				return;
+			}
+		}
+	}
+}
+static void Day4B_()
+{
+	auto [callingNumbers, bingoBoards] = ReadBoard_();
+	std::vector<bool> winningBoard(bingoBoards.size(), 0);
+	auto lastWinningNumber = 0;
+	for (const auto number : callingNumbers)
+	{
+		for (unsigned i = 0; i< bingoBoards.size(); ++i)
+		{
+			if (!winningBoard[i] AND bingoBoards[i].Validate(number))
+			{
+				winningBoard[i] = true;
+				lastWinningNumber = bingoBoards[i].SumOfUncalled() * number;
+			}
+		}
+	}
+	std::cout << "4B:" << lastWinningNumber << "\n";
 }
 int main()
 {
@@ -192,5 +334,10 @@ int main()
 	Day2B_();
 	Day3A_();
 	Day3B_();
+	Day4A_();
+	Day4B_();
+	day5::A();
+	day5::B();
+	day6::Run();
 }
 
