@@ -82,13 +82,46 @@ def solve_part2(data, showoutput = True):
 
 	return 0
 def solve_part1(data, showoutput = True):
-	rm = rolling_mean()
+	A = 0
+	B = 0
+	C = 0
+	bucket = {}
+	count = 0
+	total = 0
 	for each in data:
-		print("Add:{}".format(each))
-		rm.add_value(each)
-		print(rm)
+		count = count + 1
+		total = total + each
+		if each in bucket:
+			bucket[each] = bucket[each] + 1
+		else:
+			bucket[each] = 1
 
-	return 0
+	print("Total:{} Count:{}".format(total,count))
+
+	s_keys = sorted(bucket.keys())
+
+	lowest_total = total
+
+	found = -1
+
+	backtotal = 0
+	backcount = 0
+	for key in s_keys:
+
+		lcount = bucket[key]
+		k_part = key * lcount
+		backtotal = backtotal + k_part
+		backcount = backcount + lcount
+		#take out key from total
+		r = total - backtotal
+
+		r = r - key * (count - backcount) + (key * backcount - backtotal)
+		print("K:{} R:{}".format(key,r))
+		if r < lowest_total:
+			lowest_total = r
+			found = key
+
+	return lowest_total
 
 def main():
 	data = None
