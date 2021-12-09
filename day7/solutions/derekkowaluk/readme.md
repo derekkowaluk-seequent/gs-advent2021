@@ -10,7 +10,7 @@ FuelUsed = |16 - x| + |1 - x| + |2 - x| + |0 - x| + |4 - x| + |2 - x| + |7 - x| 
 Sorted:
 FuelUsed = |0 -  x| + |1 - x| + |1 - x| + |2 - x| + |2 - x| + |2 - x| + |4 - x| + |7 - x| + |14 - x| + |16 - x|  
 
-								        ^ Imagine Checking Here																
+					^ Imagine Checking Here																
 			(x - 0)	+ (x - 1)	(x - 1)	<-> (2 - x) + (2 - x) ....  
 				Each  is (x - N) before the check point and (N - x) after				
 
@@ -22,8 +22,8 @@ add each to the Total = 49
 Count of Input = 10
 
 sort the buckets, each number below is the count inside
-0  1  2  4  7 14 16
-1  2  3  1  1  1  1
+`0  1  2  4  7 14 16`
+`1  2  3  1  1  1  1`
 
 now traverse them starting at 0
 
