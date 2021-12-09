@@ -5,6 +5,17 @@
 import sys
 import os
 
+from PIL import Image
+
+class memory:
+	def __init__(self, xsize,ysize):
+		self.mem = [0] * xsize * ysize
+		self.xsize = xsize
+		self.ysize = ysize
+
+	def __str__(self):
+		return "Mem:{}x{} ({})".format(self.xsize, self.ysize, len(self.mem))
+
 def get_example_data():
 	return [
 		"0,9 -> 5,9",
@@ -51,22 +62,61 @@ def print_line(ldata):
 	))
 
 def get_chart(ldata, xsize = 10, ysize = 10):
-	mem = [0] * xsize * ysize
-	return mem
 
-def print_chart(mem, xsize = 10, ysize = 10):
-	for x in range(xsize):
-		for y in range(ysize):
-			v = mem[x * xsize + y]
+	maxx = xsize
+	maxy = ysize
+
+	for each in ldata:
+		for point in each:
+			if point[0] > maxx: maxx = point[0]
+			if point[1] > maxy: maxy = point[1]
+
+	print("Creating {} x {} chart".format(maxx,maxy))
+	return memory(maxx + 1, maxy + 1)
+
+def draw_rectangle(img, pos, size, color):
+	for y in range(size[1]):
+		for x in range(size[0]):
+			img.putpixel((pos[0] + x, pos [1] + y), color)
+
+
+def print_chart(mem):
+	scale = 1
+	if mem.xsize > 40 or mem.ysize > 40:
+		print("Large Memory")
+	else:
+		scale = 100
+
+	newimage = Image.new('RGB', (mem.xsize, mem.ysize))  # type, size
+
+	c = 0
+	for x in range(mem.xsize):
+		for y in range(mem.ysize):
+			v = mem.mem[y * mem.xsize + x]
+			c = 10 + v * 50
+			if c > 255 : c = 0
+			#newimage.putpixel((x,y), (255,c,255))
+			draw_rectangle(newimage, (scale * x, scale * y), (scale,scale), (c,c,c))
+
+	newimage.save("filename.png")  # takes type from filename extension
+	newimage.show()
+	return
+	
+
+	for x in range(mem.xsize):
+		for y in range(mem.ysize):
+			v = mem.mem[x * mem.xsize + y]
 			print((str(v) if v else '.'),end='')
 		print()
 	print()
 
+
+
 def draw_point(mem, point):
 	#print(point)
-	loc = point[1] * 10 + point[0]
+	loc = point[1] * mem.xsize + point[0]
 	#print(loc)
-	mem[loc] = mem[loc] + 1
+	mem.mem[loc] = mem.mem[loc] + 1
 
 def draw_line(mem, line):
 	#print(line)
@@ -82,7 +132,6 @@ def draw_line(mem, line):
 	ny = 0
 
 	if mx == 0 :
-		
 		for y in range(y0, y0 + dy + ystep, ystep):
 			draw_point(mem, [x0,y])
 	else:
@@ -98,16 +147,17 @@ def solve_part2(data, showoutput = True):
 
 def solve_part1(data, showoutput = True):
 
-	line_data = [extract_points(l) for l in data[:11]]
+	line_data = [extract_points(l) for l in data]
 
 	mem = get_chart(line_data)
+	print(mem)
 
-	for each in line_data[0:10]:
+	for each in line_data:
 		if each[0][0] == each[1][0] or each[0][1] == each[1][1]:
 			draw_line(mem, each)
 
 	overlap_count = 0
-	for each in mem:
+	for each in mem.mem:
 		if each > 1 : overlap_count = overlap_count + 1
 
 	print_chart(mem)
