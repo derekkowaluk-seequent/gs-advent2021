@@ -22,8 +22,10 @@ add each to the Total = 49
 Count of Input = 10
 
 sort the buckets, each number below is the count inside
-`0  1  2  4  7 14 16`
-`1  2  3  1  1  1  1`
+
+0  1  2  4  7 14 16  
+
+1  2  3  1  1  1  1  
 
 now traverse them starting at 0
 
