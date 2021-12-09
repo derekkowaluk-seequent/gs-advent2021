@@ -7,18 +7,16 @@ import os
 
 def get_example_data():
 	return [
-		"00100",
-		"11110",
-		"10110",
-		"10111",
-		"10101",
-		"01111",
-		"00111",
-		"11100",
-		"10000",
-		"11001",
-		"00010",
-		"01010"
+		"0,9 -> 5,9",
+		"8,0 -> 0,8",
+		"9,4 -> 3,4",
+		"2,2 -> 2,1",
+		"7,0 -> 7,4",
+		"6,4 -> 2,0",
+		"0,9 -> 2,9",
+		"3,4 -> 1,4",
+		"0,0 -> 8,8",
+		"5,5 -> 8,2"
 		]
 
 def get_data(filename):
@@ -37,10 +35,34 @@ def get_data(filename):
 	return [0,data]
 
 
+def extract_point(blob):
+	return [int(v) for v in blob.split(',')]
+
+
+def extract_points(line):
+	results = []
+	return [extract_point(x) for x in line.split('->')][:2]
+
+
+def print_line(ldata):
+	print("({},{}) ({},{})".format(
+	ldata[0][0], ldata[0][1],
+	ldata[1][0], ldata[1][1]
+	))
+
+
 def solve_part2(data, showoutput = True):
 	return 0
 
 def solve_part1(data, showoutput = True):
+
+	line_data = [extract_points(l) for l in data[:11]]
+
+	for each in line_data:
+		print_line(each)
+
+
+
 	return 0
 
 def main():
@@ -53,7 +75,7 @@ def main():
 		filepath = sys.argv[1]
 		print("Using file:{}".format(filepath))
 		result,data = get_data(filepath)
-		if result : 
+		if result :
 			sys.exit()
 
 	solution = solve_part1(data, False)
