@@ -30,7 +30,31 @@ def get_data(filename):
 
 def solve_part2(data, showoutput = True):
 
-	return 0
+	# sort the initial into buckets
+	days = 256
+	ldict = {}
+	for each in range(9): ldict[each] = 0
+
+	for each in data: ldict[each] = ldict[each] + 1
+
+	print(ldict)
+
+	for day in range(1, days+1):
+
+		spawncount = ldict[0]
+
+		for index in range(8):
+			ldict[index] = ldict[index+1]
+
+		ldict[8] = spawncount
+		ldict[6] = ldict[6] + spawncount
+
+	print("After:{}".format(ldict))
+
+	total = sum([each for key, each in ldict.items()])
+
+
+	return total
 
 def solve_part1(data, showoutput = True):
 	print("Initial state:{}".format(data))
