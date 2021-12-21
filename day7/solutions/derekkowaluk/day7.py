@@ -79,8 +79,57 @@ def get_data(filename):
 
 
 def solve_part2(data, showoutput = True):
+	bucket = {}
+	count = 0
+	total = 0
+	largest = 0
+	for each in data:
+		count = count + 1
+		total = total + each
+		if each in bucket:
+			bucket[each] = bucket[each] + 1
+		else:
+			bucket[each] = 1
+		if each > largest:largest = each
 
-	return 0
+	found = False
+	minkey = 0
+	minfuel = 0
+
+	for pos in range(largest + 1):
+		fuel = 0
+		for key, num in bucket.items():
+			dist = 0
+			if (pos > key):
+				dist = pos - key
+			else :
+				dist = key - pos
+			fuel = fuel + num * int((dist *(dist + 1))/2)
+		#print("{}:{}".format(pos, fuel))
+		if not found:
+			found = True
+			minkey = pos
+			minfuel = fuel
+		else:
+			if fuel < minfuel:
+				minkey = pos
+				minfuel = fuel
+
+	mtotal = 0
+	for each in data:
+		dist = 0
+		if (each > minkey):
+			dist = each - minkey
+		else :
+			dist = minkey - each
+		fuel = int((dist *(dist + 1))/2)
+		mtotal += fuel
+		print("Move from {} to {}: {} fuel".format(each, minkey, fuel))
+
+	print("Total:{}".format(mtotal))
+
+	return minfuel
+
 def solve_part1(data, showoutput = True):
 	A = 0
 	B = 0
