@@ -50,6 +50,23 @@ def process_input(data):
 
 
 def solve_part2(data, showoutput = True):
+	digit_segments = {0:6,1:2,2:5,3:5,4:4,5:5,6:6,7:3,8:7,9:6 }
+
+	digits = {
+	0:"abcefg",
+	1:"cf",
+	2:"acdeg",
+	3:"acdfg",
+	4:"bcdf",
+	5:"abdfg",
+	6:"abdefg",
+	7:"acf",
+	8:"abcdefg",
+	9:"abcdfg"
+	}
+
+
+
 	return 0
 
 
@@ -58,20 +75,20 @@ def solve_part2(data, showoutput = True):
 def solve_part1(data, showoutput = True):
 	#print("sample:{}".format(data[0]))
 
-	#print("Output:{}".format(data[1]))
+	if showoutput: print("Output:{}".format(data[1]))
 
-	digit_segments = {1:2,2:5,3:5,4:4,5:5,6:6,7:3,8:7,9:6 }
-	print(digit_segments)
+	digit_segments = {0:6,1:2,2:5,3:5,4:4,5:5,6:6,7:3,8:7,9:6 }
+	if showoutput: print(digit_segments)
 	usedata = data[1]
 
 	cdict = dict.fromkeys(range(1,8),0)
-	print(cdict)
+	if showoutput: print(cdict)
 	for eachset in usedata:
 		for eachone in eachset.split():
 			cdict[len(eachone)] += 1
-			print("{}".format(len(eachone)), end=' ')
-		print()
-	print(cdict)
+			if showoutput: print("{}".format(len(eachone)), end=' ')
+		if showoutput: print()
+	if showoutput: print(cdict)
 
 	result = 0
 	for eachone in [1, 4, 7, 8]:
