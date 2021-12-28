@@ -52,14 +52,32 @@ def process_input(data):
 def solve_part2(data, showoutput = True):
 	return 0
 
+
+
+
 def solve_part1(data, showoutput = True):
 	#print("sample:{}".format(data[0]))
 
-	print("Output:{}".format(data[1]))
+	#print("Output:{}".format(data[1]))
 
+	digit_segments = {1:2,2:5,3:5,4:4,5:5,6:6,7:3,8:7,9:6 }
+	print(digit_segments)
+	usedata = data[1]
 
-	
-	return 0
+	cdict = dict.fromkeys(range(1,8),0)
+	print(cdict)
+	for eachset in usedata:
+		for eachone in eachset.split():
+			cdict[len(eachone)] += 1
+			print("{}".format(len(eachone)), end=' ')
+		print()
+	print(cdict)
+
+	result = 0
+	for eachone in [1, 4, 7, 8]:
+		result += cdict[digit_segments[eachone]]
+
+	return result
 
 def main():
 	data = None
